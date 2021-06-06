@@ -1,1 +1,1 @@
-web: node build node ./dist/main
+web: node dist/src/main
