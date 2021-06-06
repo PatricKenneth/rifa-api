@@ -15,6 +15,9 @@ export function getConnectionOptions(): ConnectionOptions {
     cli: {
       migrationsDir: '/src/resources/migrations',
     },
+    ssl: {
+      rejectUnauthorized: false
+    },
   };
 }
 
