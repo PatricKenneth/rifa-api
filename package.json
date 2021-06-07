@@ -23,7 +23,7 @@
     "migration:generate": "npm run typeorm -- migration:generate -n",
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
-    "heroku-cleanup": "npm run migration:run"
+    "heroku-postbuild": "npm run migration:run"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.15",
