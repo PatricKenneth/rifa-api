@@ -6,6 +6,6 @@ export class NumbersModuleInit implements OnModuleInit {
     constructor(private readonly numbersService: NumbersService){}
 
     async onModuleInit(): Promise<void> {
-        await this.numbersService.create();
+        await this.numbersService.createInit();
     }
 }

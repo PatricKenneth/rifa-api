@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
+import { EntityManager, Transaction, TransactionManager } from "typeorm";
 import { CreateTicketDTO } from "./dto/create-ticket.dto";
 import { Ticket } from "./ticket.entity";
 import { TicketService } from "./ticket.service";
@@ -17,9 +18,11 @@ export class TicketController {
     }
 
     @Post()
+    @Transaction()
     async create(
         @Body() createTicketDTO: CreateTicketDTO,
+        @TransactionManager() manager: EntityManager,
     ): Promise<Ticket> {
-        return this.ticketService.create(createTicketDTO);
+        return this.ticketService.create(createTicketDTO, manager);
     }
 }

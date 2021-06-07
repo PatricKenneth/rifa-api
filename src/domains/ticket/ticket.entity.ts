@@ -1,6 +1,5 @@
 import { BaseEntity } from "src/infrastructure/database/base.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
-import { Customer } from "../customer/customer.entity";
+import { Column, Entity, OneToMany } from "typeorm";
 import { Numbers } from "../numbers/number.entity";
 
 @Entity('tickets')
@@ -9,15 +8,16 @@ export class Ticket extends BaseEntity {
     @Column({ type: 'float' })
     amount: number;
 
-    @ManyToOne(
-        () => Customer,
-        customer => customer.ticket,
-    )
-    @JoinColumn({ name: 'customer_id' })
-    customer: Customer;
+    @Column()
+    name: string;
 
-    @OneToOne(() => Numbers)
-    @JoinColumn({ name: 'number_id' })
-    num: Numbers;
+    @Column()
+    lastName: string;
+
+    @Column()
+    mobilePhone: string;
+
+    @OneToMany(() => Numbers, numbers => numbers.ticket)
+    numbers: Numbers[];
 
 }
