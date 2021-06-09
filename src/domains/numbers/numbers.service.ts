@@ -1,5 +1,7 @@
 import { Injectable } from "@nestjs/common";
+import { getDate } from "src/utils/gen-date";
 import { EntityManager } from "typeorm";
+import { TicketDTO } from "./dto/create-ticket.dto";
 import { Numbers } from "./number.entity";
 import { NumbersStatus } from "./numbers-status.enum";
 import { NumbersRepository } from "./numbers.repository";
@@ -23,12 +25,30 @@ export class NumbersService {
         }
     };
 
-    async update(numbers: Numbers[], manager: EntityManager): Promise<Numbers[]> {
-        return manager.save(Numbers, numbers);
-    };
+    async create(ticketDTO: TicketDTO): Promise<Numbers[]> {
+        const { name, lastName, mobilePhone } = ticketDTO;
+        ticketDTO.numbers = await this.updateStatus(ticketDTO.numbers, NumbersStatus[ticketDTO.status]);
+        const toSave = [];
+        ticketDTO.numbers.forEach( ( number, index ) => {
+            ticketDTO.numbers[index] = {
+                ...number,
+                customer: {
+                    lastName,
+                    mobilePhone,
+                    name,
+                },
+                chargeDate: getDate(),
+            }
+        });
+        return this.numbersRepository.save(ticketDTO.numbers);
+    }
 
     async find(status: string): Promise<Numbers[]> {
         return this.numbersRepository.findByStatus(NumbersStatus[status]);
+    };
+
+    async findBy(mobilePhone: string): Promise<Numbers[]> {
+        return this.numbersRepository.findBy(mobilePhone);
     };
 
     async updateStatus(numbers: Numbers[], status: NumbersStatus) {
