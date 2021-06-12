@@ -13,7 +13,7 @@ export class NumbersService {
     async createInit(): Promise<void> {
         if (!(await this.numbersRepository.count())) {
             const toSave: Numbers[] = [];
-            for (let i = 1; i <= 300; i++) {
+            for (let i = 0; i < 300; i++) {
                 toSave.push({
                     num: i,
                     amount: 100,
